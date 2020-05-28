@@ -9,7 +9,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
 import { calculateTotalCount, roundNumber } from '../../tools';
-import { addOrder } from '../../actions';
+import { addOrder, clearCart } from '../../actions';
+import doFetch from '../../doFetch';
 
 const mapStateToProps = (state) => {
   return {
@@ -59,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default connect(mapStateToProps, { addOrder })(( props ) => {
+export default connect(mapStateToProps, { addOrder, clearCart })(( props ) => {
   const classes = useStyles();
   let history = useHistory();
 
@@ -67,8 +68,12 @@ export default connect(mapStateToProps, { addOrder })(( props ) => {
   const { contact } = props;
 
   const handleConfirm = () => {
-    props.addOrder(items, props.currency);
-    history.push('/confirmed');
+    // props.addOrder(items, props.currency);
+    doFetch('/order', 'POST', { items, currency: props.currency })
+      .then(() => {
+        props.clearCart();
+        history.push('/confirmed');
+      });
   }
   
   const calculatePriceByAmount = ( price, amount ) => {

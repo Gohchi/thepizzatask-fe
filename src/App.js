@@ -14,13 +14,10 @@ import Confirm from './components/Confirm';
 import ContactInfo from './components/ContactInfo';
 import Orders from './components/Orders';
 import Confirmed from './components/Confirmed';
+import Loading from './components/Loading';
 
 import Button from '@material-ui/core/Button';
 import Toolbar from './components/Toolbar';
-
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 
 import { calculateTotalCount } from './tools';
 import doFetch from './doFetch';
@@ -39,36 +36,18 @@ const mapStateToProps = (state) => {
 class App extends Component {
   // constructor(props){
   //   super(props)
-  //https://thepizzatask-be.herokuapp.com/api
   // }
   componentDidMount(){
-    // find pizzas
-    
     doFetch('/products', 'GET')
-    .then(response => response.json())
-    .then(res => {
-      setTimeout(() => {
+      .then(res => {
         this.props.savePizzas(res.pizzas);
-      }, 1000);
-      // store.dispatch({
-      //   type: ADD_VIEWS,
-      //   items: res.menuItems
-      // })
-    });
+      });
   }
 
   render(){
     const { pizzas, cartTotal, cart } = this.props;
-    const loading = pizzas.length === 0 ?
-      (
-        <Container maxWidth="sm" >
-          <Paper elevation={3}>
-            <Typography variant="h4" component="h2">
-              LOADING
-            </Typography>
-          </Paper>
-        </Container>
-      ) : undefined;
+    
+    const loading = pizzas.length === 0 ? <Loading /> : undefined;
 
     return (
       <Router>

@@ -10,3 +10,7 @@ export const formatDate = date => {
   const region = "en-US";
   return date.toLocaleDateString(region) + ' ' + date.toLocaleTimeString(region);
 }
+
+export const fixDate = date => {
+  return new Date(date);
+}
