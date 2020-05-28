@@ -75,27 +75,27 @@ export default connect(mapStateToProps, { addOrder })(( props ) => {
     return `${roundNumber(base * price * amount)} ${symbol}`;
   }
 
-  const items = Object.keys(props.cart).map(key => {
-    const amount = props.cart[key];
-    const pizza = props.pizzas.filter(o => o.id === parseInt(key))[0];
-    return Object.assign({ key, amount }, pizza, { name: 'Pizza: ' + pizza.name });
+  const items = Object.keys(props.cart).map(id => {
+    const amount = props.cart[id];
+    const pizza = props.pizzas.filter(o => o.id === parseInt(id))[0];
+    return Object.assign({ id, amount }, pizza, { name: 'Pizza: ' + pizza.name });
   })
 
-  items.push({ key: 'd', name: 'Shipping fee', amount: 1, price: 3 });
+  items.push({ id: 2, name: 'Shipping fee', amount: 1, price: 3 });
 
   const total = items.reduce((t, item) => t + item.price * item.amount, 0);
-  items.push({ key: 't', name: 'Total', amount: 1, price: total });
+  items.push({ id: 1, name: 'Total', amount: 1, price: total });
 
   return (
     <Container maxWidth="sm" className={classes.root}>
       {items.map(item => {
-        const isPizza = item.key !== 't' && item.key !== 'd';
+        const isPizza = item.id > 2;
         return (
-          <Paper elevation={3} className={isPizza ? classes.item : classes.itemAdded} key={item.key}>
-            <Typography style={{ flexGrow: 1 }} className={item.key === 't' ? classes.itemTotal : undefined}>
+          <Paper elevation={3} className={isPizza ? classes.item : classes.itemAdded} key={item.id}>
+            <Typography style={{ flexGrow: 1 }} className={item.id === 1 ? classes.itemTotal : undefined}>
               {item.name}{isPizza ? ` (${item.amount})` : ''}
             </Typography>
-            <Typography className={item.key === 't' ? classes.itemTotal : undefined}>
+            <Typography className={item.id === 1 ? classes.itemTotal : undefined}>
               {calculatePriceByAmount(item.price, item.amount)}
             </Typography>
           </Paper>

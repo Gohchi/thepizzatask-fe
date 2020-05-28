@@ -59,7 +59,6 @@ class App extends Component {
 
   render(){
     const { pizzas, cartTotal, cart } = this.props;
-
     const loading = pizzas.length === 0 ?
       (
         <Container maxWidth="sm" >
@@ -95,7 +94,7 @@ class App extends Component {
                     <Button variant="contained" color="secondary" size="large" id="to-confirm">Proceed</Button>
                   </Link>
                   : undefined}
-                {pizzas.map((o, i) => 
+                {pizzas.filter(o => o.id > 2).map((o, i) => 
                   <Products key={i} {...o} amount={cart[o.id]} />
                 )}
                 {loading}

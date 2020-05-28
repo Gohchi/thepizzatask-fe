@@ -1,7 +1,7 @@
 import { ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART, CLEAR_FROM_CART } from '../actions'
 
 // const initialState = {};
-const initialState = { 1: 1, 2: 2, 3: 1 };
+const initialState = { 3: 1, 4: 2, 5: 1 };
 
 export default (state = initialState, action) => {
   let newState;

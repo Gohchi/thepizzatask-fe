@@ -42,15 +42,8 @@ const useStyles = makeStyles((theme) => ({
 export default connect(mapStateToProps, { })(( props ) => {
   const classes = useStyles();
 
-  const getPizzaNameByKey = key => {
-    switch (key){
-      case 'd':
-        return 'Shipping fee';
-      case 't':
-        return 'Total';
-      default:
-        return 'Pizza: ' + props.pizzas.filter(o => o.id === parseInt(key))[0].name;
-    }
+  const getPizzaNameById = id => {
+    return props.pizzas.filter(o => o.id === parseInt(id))[0].name;
   }
   
   const calculatePriceByAmount = ( base, code, price ) => {
@@ -78,8 +71,8 @@ export default connect(mapStateToProps, { })(( props ) => {
                 Items:
               </Typography>
               {order.items.map((item, l) => {
-                const name = getPizzaNameByKey(item.key);
-                const isPizza = item.key !== 't' && item.key !== 'd';
+                const name = getPizzaNameById(item.id);
+                const isPizza = item.id > 2;
                 return (
                   <Paper key={l} elevation={1} className={classes.ordersItem}>
                     <Typography style={{ flexGrow: 1 }}>
