@@ -21,7 +21,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "https://thepizzatask-be.herokuapp.com",
   "eslintConfig": {
     "extends": "react-app"
   },

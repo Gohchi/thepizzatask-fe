@@ -43,7 +43,7 @@ class App extends Component {
   componentDidMount(){
     // find pizzas
     
-    fetch('api/products', { 
+    fetch('https://thepizzatask-be.herokuapp.com/api/products', { 
       method: 'GET', 
       // headers: new Headers({
       //   Authorization: action.authToken
