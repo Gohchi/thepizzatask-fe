@@ -23,6 +23,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
 import { calculateTotalCount } from './tools';
+import doFetch from './doFetch';
 import { savePizzas } from './actions';
 
 const mapStateToProps = (state) => {
@@ -43,16 +44,7 @@ class App extends Component {
   componentDidMount(){
     // find pizzas
     
-    fetch('https://thepizzatask-be.herokuapp.com/api/products', { 
-      method: 'GET', 
-      // headers: new Headers({
-      //   Authorization: action.authToken
-      // })
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
-    })
+    doFetch('/products', 'GET')
     .then(response => response.json())
     .then(res => {
       setTimeout(() => {
