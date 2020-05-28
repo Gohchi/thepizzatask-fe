@@ -7,7 +7,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
   padding: 0;
   background: url(images/bg01.jpg) repeat right top;
-  background-size: cover;
+  background-size: cover; 
+}
+@media (max-width: 1024px) {
+  body {
+    background: url(images/bg01.jpg);
+    background-attachment: fixed;
+    background-size: cover; 
+  }
 }
 
 code {

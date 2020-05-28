@@ -17,7 +17,7 @@ const reducer = combineReducers({
 });
 
 const customMiddleWare = store => next => action => {
-  console.log(action);
+  // console.log(action);
   next(action);
   mainMiddleware(store, action);
 }

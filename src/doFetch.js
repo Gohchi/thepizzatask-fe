@@ -12,7 +12,6 @@ export default (path, method = 'GET', data = null) => {
   };
   if( data ){
     config.body = JSON.stringify(data);
-    console.log(config.body);
   }
   return fetch(basePath + '/api' + path, config).then(response => response.json());
 };
