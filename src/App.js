@@ -48,11 +48,11 @@ class App extends Component {
     this.getProducts();
   }
   getProducts(){
-    this.setState({ productsLoadingError: false })
     doFetch('/products', 'GET')
       .then(res => {
         this.props.savePizzas(res.pizzas);
       }, () => this.setState({ productsLoadingError: true }));
+    this.setState({ productsLoadingError: false })
   }
   render(){
     const { pizzas, /*cartTotal,*/ cart } = this.props;
