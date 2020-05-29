@@ -13,6 +13,9 @@ export default (state = initialState, action) => {
     case REMOVE_FROM_CART:
       newState = Object.assign({}, state);
       newState[action.id] = typeof newState[action.id] === 'undefined' || newState[action.id] === 0 ? 0 : newState[action.id]-1;
+      if(newState[action.id] === 0){
+        delete newState[action.id];
+      }
       return newState;
     case CLEAR_FROM_CART:
       newState = Object.assign({}, state);
