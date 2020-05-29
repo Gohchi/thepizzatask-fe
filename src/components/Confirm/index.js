@@ -60,9 +60,6 @@ const useStyles = makeStyles((theme) => ({
   },
   confirmButton: {
     fontSize: '32px'
-  },
-  confirmFix: {
-    height: '66px'
   }
 }));
 
@@ -89,16 +86,21 @@ export default connect(mapStateToProps, { addOrder, clearCart })(( props ) => {
   const items = Object.keys(props.cart).map(id => {
     const amount = props.cart[id];
     const pizza = props.pizzas.filter(o => o.id === parseInt(id))[0];
+    if(!pizza) return { name: 'not-found', price: 0, amount: 1 }; // temp fix - test cart with items but load products from server
     return Object.assign({ id, amount }, pizza, { name: 'Pizza: ' + pizza.name });
   })
 
   items.push({ id: 2, name: 'Shipping fee', amount: 1, price: 3 });
-
   const total = items.reduce((t, item) => t + item.price * item.amount, 0);
   items.push({ id: 1, name: 'Total', amount: 1, price: total });
 
   return (
     <Container maxWidth="sm" className={classes.root}>
+      <Paper elevation={3} className={classes.item}>
+        <Typography>
+          Check all the info and confirm (at the bottom)
+        </Typography>
+      </Paper>
       {items.map(item => {
         const isPizza = item.id > 2;
         return (
@@ -160,7 +162,7 @@ export default connect(mapStateToProps, { addOrder, clearCart })(( props ) => {
         ? 'Confirm'
         : <Link to="/contactinfo" className="no-link">Go to complete contact info</Link>}
       </Button>
-      <div className={classes.confirmFix}></div>
+      <div className="mobile-bottom-fix"></div>
     </Container>
   );
 });

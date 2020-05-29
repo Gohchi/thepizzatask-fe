@@ -76,7 +76,7 @@ class Orders extends Component {
     }
 
     if(orders.length === 0) return <Loading />;
-    
+
     return (
       <Container maxWidth="sm" className={classes.root}>
         <Paper elevation={3} className={classes.main}>
@@ -113,6 +113,7 @@ class Orders extends Component {
             </Paper>
           )}
         </Paper>
+        <div className="mobile-bottom-fix"></div>
       </Container>
     );
   }

@@ -88,3 +88,7 @@
   bottom: 0;
   width: 100%;
 }
+
+.mobile-bottom-fix {
+  height: 66px;
+}

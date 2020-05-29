@@ -50,8 +50,6 @@ class App extends Component {
   render(){
     const { pizzas, /*cartTotal,*/ cart } = this.props;
     
-    const loading = pizzas.length === 0 ? <Loading /> : undefined;
-
     return (
       <Router>
         <div className="main">
@@ -71,15 +69,14 @@ class App extends Component {
                 <Confirm />
               </Route>
               <Route path="/products">
-                  {/*cartTotal > 0 ? 
-                    <Link to="/confirm" className="no-link">
-                      <Button variant="contained" color="secondary" size="large" id="to-confirm">Proceed</Button>
-                    </Link>
-                    : undefined} */}
-                  {pizzas.filter(o => o.id > 2).map((o, i) => 
-                    <Products key={i} {...o} amount={cart[o.id]} />
-                  )}
-                  {loading}
+                  {
+                    pizzas.length === 0
+                    ? <Loading />
+                    : pizzas.filter(o => o.id > 2).map((o, i) => 
+                        <Products key={i} {...o} amount={cart[o.id]} />
+                      )
+                  }
+                  <div className="mobile-bottom-fix"></div>
               </Route>
               <Route path="/">
                 <Container maxWidth="sm">

@@ -11,7 +11,7 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import MoreVert from '@material-ui/icons/MoreVert';
 import Euro from '@material-ui/icons/Euro';
 import LocalPizzaOutlinedIcon from '@material-ui/icons/LocalPizzaOutlined';
-import Money from '@material-ui/icons/Money';
+import AttachMoney from '@material-ui/icons/AttachMoney';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 
@@ -122,7 +122,7 @@ export default connect( mapStateToProps, { setCurrency })(( props ) => {
               <Euro />
             </MenuItem>
             <MenuItem onClick={handleCurrency('USD')}>
-              <Money />
+              <AttachMoney />
             </MenuItem>
           </Menu>
       </Toolbar>
