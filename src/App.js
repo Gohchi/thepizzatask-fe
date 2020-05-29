@@ -15,18 +15,21 @@ import ContactInfo from './components/ContactInfo';
 import Orders from './components/Orders';
 import Confirmed from './components/Confirmed';
 import Loading from './components/Loading';
+import BottomNav from './components/BottomNav';
 
-import Button from '@material-ui/core/Button';
 import Toolbar from './components/Toolbar';
 
-import { calculateTotalCount } from './tools';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+
+// import { calculateTotalCount } from './tools';
 import doFetch from './doFetch';
 import { savePizzas } from './actions';
 
 const mapStateToProps = (state) => {
   return {
     cart: state.cart,
-    cartTotal: calculateTotalCount(state.cart),
+    // cartTotal: calculateTotalCount(state.cart),
     currency: state.currency,
     pizzas: state.pizzas
   }
@@ -45,7 +48,7 @@ class App extends Component {
   }
 
   render(){
-    const { pizzas, cartTotal, cart } = this.props;
+    const { pizzas, /*cartTotal,*/ cart } = this.props;
     
     const loading = pizzas.length === 0 ? <Loading /> : undefined;
 
@@ -68,27 +71,30 @@ class App extends Component {
                 <Confirm />
               </Route>
               <Route path="/products">
-                {cartTotal > 0 ? 
-                  <Link to="/confirm" className="no-link">
-                    <Button variant="contained" color="secondary" size="large" id="to-confirm">Proceed</Button>
-                  </Link>
-                  : undefined}
-                {pizzas.filter(o => o.id > 2).map((o, i) => 
-                  <Products key={i} {...o} amount={cart[o.id]} />
-                )}
-                {loading}
+                  {/*cartTotal > 0 ? 
+                    <Link to="/confirm" className="no-link">
+                      <Button variant="contained" color="secondary" size="large" id="to-confirm">Proceed</Button>
+                    </Link>
+                    : undefined} */}
+                  {pizzas.filter(o => o.id > 2).map((o, i) => 
+                    <Products key={i} {...o} amount={cart[o.id]} />
+                  )}
+                  {loading}
               </Route>
               <Route path="/">
-                <Button
-                  variant="contained" color="secondary" size="large"
-                  id="order-now"
-                >
-                  <Link to="/products" className="no-link">Order now</Link>
-                </Button>
+                <Container maxWidth="sm">
+                  <Button
+                    variant="contained" color="secondary" size="large"
+                    id="order-now"
+                  >
+                    <Link to="/products" className="no-link">Order now</Link>
+                  </Button>
+                </Container>
               </Route>
             </Switch>
           </div>
           {/* <a href="http://www.freepik.com" id="bg-owner-info">Background designed by Freepik</a> */}
+          <BottomNav />
         </div>
       </Router>
     );

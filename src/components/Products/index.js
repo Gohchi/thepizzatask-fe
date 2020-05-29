@@ -9,8 +9,10 @@ import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import AddCircle from '@material-ui/icons/AddCircle';
-import RemoveCircle from '@material-ui/icons/RemoveCircle';
 import Chip from '@material-ui/core/Chip';
+import RemoveCircle from '@material-ui/icons/RemoveCircle';
+
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import { addToCart, removeFromCart, clearFromCart } from '../../actions';
 
@@ -18,6 +20,12 @@ import { addToCart, removeFromCart, clearFromCart } from '../../actions';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 445,
+    margin: '20px',
+    display: 'inline-block',
+    textAlign: 'left'
+  },
+  rootMobile: {
+    width: '80%',
     margin: '20px',
     display: 'inline-block',
     textAlign: 'left'
@@ -45,6 +53,7 @@ const mapStateToProps = (state) => {
 export default connect( mapStateToProps, { addToCart, removeFromCart, clearFromCart })(function ( props ) {
   const { id, name, price, description, photo, amount } = props;
   const { base, symbol } = props.currency;
+  const matches = useMediaQuery('(max-width:500px)');
 
   // const url = require(`../../images/${photo}.jpg`);
   const urlSmall = require(`../../images/${photo}-small.jpg`);
@@ -64,7 +73,7 @@ export default connect( mapStateToProps, { addToCart, removeFromCart, clearFromC
     props.clearFromCart(id);
   };
   return (
-    <Card className={classes.root}>
+    <Card className={matches ? classes.rootMobile : classes.root}>
       <CardHeader
         title={name}
         subheader={calculatePrice()}

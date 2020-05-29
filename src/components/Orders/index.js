@@ -64,8 +64,6 @@ class Orders extends Component {
     const { classes, pizzas } = this.props;
     const { orders } = this.state;
 
-    const loading = orders.length === 0 ? <Loading /> : undefined;
-
     const getPizzaNameById = id => {
       const item = pizzas.filter(o => o.id === parseInt(id))[0]
       return item ? item.name : 'not-found';
@@ -77,43 +75,44 @@ class Orders extends Component {
       return `${roundNumber( base * price)} ${symbol}`;
     }
 
+    if(orders.length === 0) return <Loading />;
+    
     return (
       <Container maxWidth="sm" className={classes.root}>
-          <Paper elevation={3} className={classes.main}>
-            <Typography variant="h4" component="h2">
-              Orders
-            </Typography>
-            {loading}
-            {orders.map((order, i) => 
-              <Paper key={i} elevation={1} className={classes.orders}>
-                <Container className={classes.date}>
-                  <Typography style={{ flexGrow: 1 }}>
-                    Date:
-                  </Typography>
-                  <Typography>
-                    {formatDate(order.date)}
-                  </Typography>
-                </Container>
-                <Typography>
-                  Items:
+        <Paper elevation={3} className={classes.main}>
+          <Typography variant="h4" component="h2">
+            Orders
+          </Typography>
+          {orders.map((order, i) => 
+            <Paper key={i} elevation={3} className={classes.orders}>
+              <Container className={classes.date}>
+                <Typography style={{ flexGrow: 1 }}>
+                  Date:
                 </Typography>
-                {order.items.map((item, l) => {
-                  const name = getPizzaNameById(item.id);
-                  const isPizza = item.id > 2;
-                  return (
-                    <Paper key={l} elevation={1} className={classes.ordersItem}>
-                      <Typography style={{ flexGrow: 1 }}>
-                        {name}{isPizza ? ` (${item.amount})` : ''}
-                      </Typography>
-                      <Typography>
-                        {calculatePriceByAmount(order.currencyBase, order.currencyCode, item.price)}
-                      </Typography>
-                    </Paper>
-                  )}
+                <Typography>
+                  {formatDate(order.date)}
+                </Typography>
+              </Container>
+              <Typography>
+                Items:
+              </Typography>
+              {order.items.map((item, l) => {
+                const name = getPizzaNameById(item.id);
+                const isPizza = item.id > 2;
+                return (
+                  <Paper key={l} elevation={1} className={classes.ordersItem}>
+                    <Typography style={{ flexGrow: 1 }}>
+                      {name}{isPizza ? ` (${item.amount})` : ''}
+                    </Typography>
+                    <Typography>
+                      {calculatePriceByAmount(order.currencyBase, order.currencyCode, item.price)}
+                    </Typography>
+                  </Paper>
                 )}
-              </Paper>
-            )}
-          </Paper>
+              )}
+            </Paper>
+          )}
+        </Paper>
       </Container>
     );
   }

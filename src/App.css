@@ -52,7 +52,7 @@
 }
 
 #order-now {
-  margin: 200px;
+  margin: 50% auto;
   font-size: 32px;
 }
 
@@ -77,7 +77,14 @@
 
 #to-confirm {
   position: fixed;
-  bottom: 0;
+  bottom: 50px;
   right: 0;
+  font-size: 32px;
   margin: 20px;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }

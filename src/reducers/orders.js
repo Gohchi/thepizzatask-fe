@@ -1,6 +1,6 @@
 import { ADD_ORDER } from '../actions'
 
-const initialState = [{
+const initialState = [/*{
   id: 1,
   date: new Date(2020, 2, 12, 19, 22),
   items: [
@@ -22,7 +22,7 @@ const initialState = [{
   ],
   currencyBase: 1.12,
   currencyCode: 'USD'
-}];
+}*/];
 
 export default (state = initialState, action) => {
   switch (action.type) {

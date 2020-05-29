@@ -57,6 +57,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     margin: '10px 0',
     padding: '5px 15px'
+  },
+  confirmButton: {
+    fontSize: '32px'
+  },
+  confirmFix: {
+    height: '66px'
   }
 }));
 
@@ -147,13 +153,14 @@ export default connect(mapStateToProps, { addOrder, clearCart })(( props ) => {
         : undefined}
       <Button
         variant="contained" color="secondary" size="large"
-        id="confirm-button"
+        className={classes.confirmButton}
         onClick={contact.valid ? handleConfirm : undefined}
       >
         {contact.valid
         ? 'Confirm'
         : <Link to="/contactinfo" className="no-link">Go to complete contact info</Link>}
       </Button>
+      <div className={classes.confirmFix}></div>
     </Container>
   );
 });

@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import {
   Link
 } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 // import DeleteIcon from '@material-ui/icons/Delete';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import MoreVert from '@material-ui/icons/MoreVert';
 import Euro from '@material-ui/icons/Euro';
+import LocalPizzaOutlinedIcon from '@material-ui/icons/LocalPizzaOutlined';
 import Money from '@material-ui/icons/Money';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
@@ -49,7 +50,6 @@ export default connect( mapStateToProps, { setCurrency })(( props ) => {
   const matches = useMediaQuery('(min-width:600px)');
   // console.log(matches);
   const classes = useStyles();
-  let history = useHistory();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = event => {
@@ -61,11 +61,6 @@ export default connect( mapStateToProps, { setCurrency })(( props ) => {
   const handleCurrency = code => {
     return () => {
       props.setCurrency(code);
-    }
-  }
-  const handleRedirect = to => {
-    return () => {
-      history.push(to);
     }
   }
   const getVariant = code => {
@@ -90,15 +85,22 @@ export default connect( mapStateToProps, { setCurrency })(( props ) => {
               <Link to="/confirm" className="no-link">
                 <IconButton color="inherit" aria-label="cart">
                   <Badge badgeContent={props.cartTotal} color="secondary">
-                      <ShoppingCartIcon />
+                      {props.cartTotal > 0 ? <ShoppingCartIcon /> : <ShoppingCartOutlinedIcon />}
                   </Badge>
                 </IconButton>
               </Link>
             </Tooltip>
-            <Tooltip title="Orders" aria-label="orders">
+            <Tooltip title="Orders" aria-label="orders" variant="contained">
               <Link to="/orders" className="no-link">
                 <IconButton color="inherit" aria-label="orders">
                   <ListAltIcon />
+                </IconButton>
+              </Link>
+            </Tooltip>
+            <Tooltip title="Pizzas" aria-label="pizzas" variant="contained">
+              <Link to="/products" className="no-link">
+                <IconButton color="inherit" aria-label="pizzas">
+                  <LocalPizzaOutlinedIcon />
                 </IconButton>
               </Link>
             </Tooltip>
@@ -121,14 +123,6 @@ export default connect( mapStateToProps, { setCurrency })(( props ) => {
             </MenuItem>
             <MenuItem onClick={handleCurrency('USD')}>
               <Money />
-            </MenuItem>
-            <MenuItem onClick={handleRedirect('/confirm')}>
-              <Badge badgeContent={props.cartTotal} color="secondary">
-                <ShoppingCartIcon />
-              </Badge>
-            </MenuItem>
-            <MenuItem onClick={handleRedirect('/orders')}>
-              <ListAltIcon />
             </MenuItem>
           </Menu>
       </Toolbar>
