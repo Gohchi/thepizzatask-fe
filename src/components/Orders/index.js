@@ -58,7 +58,6 @@ const styles = (theme) => ({
   },
   secondaryHeading: {
     fontSize: '16px',
-    // color: theme.palette.text.secondary,
   },
   panelDetails: {
     flexDirection: 'column'
@@ -93,9 +92,7 @@ class Orders extends Component {
     const { classes, pizzas } = this.props;
     const { orders, expanded, loading } = this.state;
 
-
-    const handleChange = (panelId) => (event, isExpanded) => {
-      // console.log(panel, event, isExpanded);
+    const handleChange = (panelId) => () => {
       this.setExpanded( panelId === expanded ? null : panelId );
     };
     const getPizzaNameById = id => {
@@ -125,8 +122,7 @@ class Orders extends Component {
                   <ExpansionPanelSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1bh-content"
-                    // id="panel1bh-header"
-                    >
+                  >
                     <Typography className={classes.heading}>Total: {calculatePriceByAmount(order.currencyBase, order.currencyCode, total.price)}</Typography>
                     <Typography className={classes.secondaryHeading}>{formatDate(order.date)}</Typography>
                   </ExpansionPanelSummary>

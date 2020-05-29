@@ -25,21 +25,11 @@ const mapStateToProps = (state) => {
 const useStyles = makeStyles((theme) => ({
   root: {
     textAlign: 'left',
-    // display: 'flex',
-    // flexWrap: 'wrap',
-    // '& > *': {
-    //   margin: theme.spacing(1),
-    //   width: theme.spacing(16),
-    //   height: theme.spacing(16),
-    // },
   },
   item: {
-    // height: theme.spacing(6),
     display: 'flex',
     margin: '10px 0',
     padding: '5px 15px'
-    // paddingTop: '15px',
-    // fontSize: '22px'
   },
   itemAdded: {
     display: 'flex',
@@ -73,7 +63,6 @@ export default connect(mapStateToProps, { addOrder, clearCart })(( props ) => {
   const [disabledButton, setDisabledButton] = React.useState(false);
   const handleConfirm = () => {
     setDisabledButton( true );
-    // props.addOrder(items, props.currency);
     doFetch('/order', 'POST', { items, currency: props.currency })
       .then(() => {
         setDisabledButton( false );

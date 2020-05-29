@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
 import './App.css';
 import { connect } from 'react-redux';
 import {
@@ -22,14 +21,12 @@ import Toolbar from './components/Toolbar';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 
-// import { calculateTotalCount } from './tools';
 import doFetch from './doFetch';
 import { savePizzas } from './actions';
 
 const mapStateToProps = (state) => {
   return {
     cart: state.cart,
-    // cartTotal: calculateTotalCount(state.cart),
     currency: state.currency,
     pizzas: state.pizzas
   }
@@ -55,7 +52,7 @@ class App extends Component {
     this.setState({ productsLoadingError: false })
   }
   render(){
-    const { pizzas, /*cartTotal,*/ cart } = this.props;
+    const { pizzas, cart } = this.props;
     const { productsLoadingError } = this.state;
     return (
       <Router>
@@ -103,7 +100,6 @@ class App extends Component {
               </Route>
             </Switch>
           </div>
-          {/* <a href="http://www.freepik.com" id="bg-owner-info">Background designed by Freepik</a> */}
           <BottomNav />
         </div>
       </Router>

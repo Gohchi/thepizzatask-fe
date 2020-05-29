@@ -8,7 +8,7 @@ import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import LocalPizzaOutlinedIcon from '@material-ui/icons/LocalPizzaOutlined';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Badge from '@material-ui/core/Badge';
-import { makeStyles } from '@material-ui/core/styles';
+
 import { useHistory } from 'react-router-dom';
 import { calculateTotalCount } from '../../tools';
 
@@ -17,15 +17,7 @@ const mapStateToProps = (state) => {
     cartTotal: calculateTotalCount(state.cart)
   }
 }
-
-const useStyles = makeStyles((theme) => ({
-  badge: {
-    // top: '15px',
-    // right: '20px'
-  }
-}));
 export default connect(mapStateToProps)(props => {
-  const classes = useStyles();
   const matches = useMediaQuery('(max-width:600px)');
   let history = useHistory();
 
@@ -36,7 +28,7 @@ export default connect(mapStateToProps)(props => {
   }
   if(!matches) return <div></div>;
   const cartIcon = 
-    <Badge badgeContent={props.cartTotal} color="secondary" className={classes.badge} >
+    <Badge badgeContent={props.cartTotal} color="secondary">
       {props.cartTotal > 0 ? <ShoppingCartIcon /> : <ShoppingCartOutlinedIcon />}
     </Badge>
   ;

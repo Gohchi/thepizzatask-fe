@@ -4,7 +4,6 @@ import {
   Link
 } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
-// import DeleteIcon from '@material-ui/icons/Delete';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import ListAltIcon from '@material-ui/icons/ListAlt';
@@ -48,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default connect( mapStateToProps, { setCurrency })(( props ) => {
   const matches = useMediaQuery('(min-width:600px)');
-  // console.log(matches);
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
