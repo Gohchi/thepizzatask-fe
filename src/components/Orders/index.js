@@ -14,7 +14,7 @@ import { withStyles } from '@material-ui/styles';
 
 import Loading from '../../components/Loading';
 
-import { fixDate, formatDate, roundNumber } from '../../tools';
+import { fixDate, formatDate, formatMoney } from '../../tools';
 import { currencies } from '../../reducers/currency';
 import doFetch from '../../doFetch';
 
@@ -106,7 +106,7 @@ class Orders extends Component {
     const calculatePriceByAmount = ( base, code, price ) => {
       const currency = currencies[code];
       const symbol = currency ? currency.symbol : 'not-found';
-      return `${roundNumber( base * price)} ${symbol}`;
+      return `${formatMoney( base * price)} ${symbol}`;
     }
     if(loading) return  <Loading />;
 

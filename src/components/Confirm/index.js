@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
-import { calculateTotalCount, roundNumber } from '../../tools';
+import { calculateTotalCount, formatMoney } from '../../tools';
 import { addOrder, clearCart } from '../../actions';
 import doFetch from '../../doFetch';
 
@@ -83,7 +83,7 @@ export default connect(mapStateToProps, { addOrder, clearCart })(( props ) => {
   }
   
   const calculatePriceByAmount = ( price, amount ) => {
-    return `${roundNumber(base * price * amount)} ${symbol}`;
+    return `${formatMoney(base * price * amount)} ${symbol}`;
   }
 
   const items = Object.keys(props.cart).map(id => {

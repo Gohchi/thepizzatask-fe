@@ -7,8 +7,11 @@ export const roundNumber = num => {
 }
 
 export const formatDate = date => {
-  const region = "en-US";
+  const region = "en-GB";
   return date.toLocaleDateString(region) + ' ' + date.toLocaleTimeString(region);
+}
+export const formatMoney = number => {
+  return roundNumber(number).toFixed(2);
 }
 
 export const fixDate = date => {
