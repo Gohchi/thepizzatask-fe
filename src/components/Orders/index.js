@@ -64,12 +64,47 @@ const styles = (theme) => ({
   }
 });
 
+const Order = ({ total, order, classes, getPizzaNameById, calculatePriceByAmount}) => {
+  const [expanded, setExpanded] = React.useState(false);
+  
+  const handleClick = () => {
+    setExpanded(!expanded);
+  }
+
+  return (
+    <ExpansionPanel expanded={expanded} onChange={handleClick}>
+      <ExpansionPanelSummary
+        expandIcon={<ExpandMoreIcon />}
+      >
+        <Typography className={classes.heading}>Total: {calculatePriceByAmount(order.currencyBase, order.currencyCode, total.price)}</Typography>
+        <Typography className={classes.secondaryHeading}>{formatDate(order.date)}</Typography>
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails className={classes.panelDetails}>
+        {order.items.map((item, l) => {
+          if(item.id === 1) return undefined; // skip total
+          const name = getPizzaNameById(item.id);
+          const isPizza = item.id > 2;
+          return (
+            <Paper key={l} elevation={1} className={classes.ordersItem}>
+              <Typography style={{ flexGrow: 1 }}>
+                {name}{isPizza ? ` (${item.amount})` : ''}
+              </Typography>
+              <Typography>
+                {calculatePriceByAmount(order.currencyBase, order.currencyCode, item.price)}
+              </Typography>
+            </Paper>
+          )}
+        )}
+      </ExpansionPanelDetails>
+    </ExpansionPanel>
+  )
+}
+
 class Orders extends Component {
   constructor(props){
     super(props)
     this.state = {
       orders: [],
-      expanded: null,
       loading: true
     }
   }
@@ -82,19 +117,11 @@ class Orders extends Component {
         })
       }, () => this.setState({ loading: false }));
   }
-  setExpanded( value ){
-    this.setState({
-      expanded: value
-    })
-  }
 
   render(){
     const { classes, pizzas } = this.props;
-    const { orders, expanded, loading } = this.state;
+    const { orders, loading } = this.state;
 
-    const handleChange = (panelId) => () => {
-      this.setExpanded( panelId === expanded ? null : panelId );
-    };
     const getPizzaNameById = id => {
       const item = pizzas.filter(o => o.id === parseInt(id))[0]
       return item ? item.name : 'not-found';
@@ -105,7 +132,7 @@ class Orders extends Component {
       const symbol = currency ? currency.symbol : 'not-found';
       return `${formatMoney( base * price)} ${symbol}`;
     }
-    if(loading) return  <Loading />;
+    if (loading) return <Loading />;
 
     return (
       <Container maxWidth="sm" className={classes.root}>
@@ -115,36 +142,13 @@ class Orders extends Component {
             </Typography>
           </Paper>,
           <div className={classes.rootNew}>
-            {orders.map((order, i) => {
-              const total = order.items.filter(o => o.id === 1)[0];
-              return (
-                <ExpansionPanel key={i} expanded={expanded === i} onChange={handleChange(i)}>
-                  <ExpansionPanelSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1bh-content"
-                  >
-                    <Typography className={classes.heading}>Total: {calculatePriceByAmount(order.currencyBase, order.currencyCode, total.price)}</Typography>
-                    <Typography className={classes.secondaryHeading}>{formatDate(order.date)}</Typography>
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails className={classes.panelDetails}>
-                    {order.items.map((item, l) => {
-                      if(item.id === 1) return undefined; // skip total
-                      const name = getPizzaNameById(item.id);
-                      const isPizza = item.id > 2;
-                      return (
-                        <Paper key={l} elevation={1} className={classes.ordersItem}>
-                          <Typography style={{ flexGrow: 1 }}>
-                            {name}{isPizza ? ` (${item.amount})` : ''}
-                          </Typography>
-                          <Typography>
-                            {calculatePriceByAmount(order.currencyBase, order.currencyCode, item.price)}
-                          </Typography>
-                        </Paper>
-                      )}
-                    )}
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
-              )}
+            {orders.map((order, i) => <Order
+                key={i} order={order}
+                total={order.items.filter(o => o.id === 1)[0]} 
+                classes={classes}
+                getPizzaNameById={getPizzaNameById}
+                calculatePriceByAmount={calculatePriceByAmount}
+              />
             )}
           </div>
         <div className="mobile-bottom-fix"></div>
