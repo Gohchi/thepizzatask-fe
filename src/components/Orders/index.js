@@ -5,6 +5,11 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import { withStyles } from '@material-ui/styles';
 
 import Loading from '../../components/Loading';
@@ -30,7 +35,8 @@ const styles = (theme) => ({
     padding: 0
   },
   main: {
-    padding: '10px'
+    padding: '10px',
+    margin: '10px 0'
   },
   orders: {
     padding: '5px 15px',
@@ -41,13 +47,31 @@ const styles = (theme) => ({
     padding: '5px 15px',
     margin: '10px'
   },
+  
+  rootNew: {
+    width: '100%',
+  },
+  heading: {
+    fontSize: '16px',
+    flexBasis: '45%',
+    flexShrink: 0,
+  },
+  secondaryHeading: {
+    fontSize: '16px',
+    // color: theme.palette.text.secondary,
+  },
+  panelDetails: {
+    flexDirection: 'column'
+  }
 });
 
 class Orders extends Component {
   constructor(props){
     super(props)
     this.state = {
-      orders: []
+      orders: [],
+      expanded: null,
+      loading: true
     }
   }
   componentDidMount(){
@@ -55,15 +79,25 @@ class Orders extends Component {
       .then(res => {
         const orders = res.map(o => Object.assign({}, o, { date: fixDate(o.date) }));
         this.setState({
-          orders
+          orders, loading: false
         })
-      });
+      }, () => this.setState({ loading: false }));
+  }
+  setExpanded( value ){
+    this.setState({
+      expanded: value
+    })
   }
 
   render(){
     const { classes, pizzas } = this.props;
-    const { orders } = this.state;
+    const { orders, expanded, loading } = this.state;
 
+
+    const handleChange = (panelId) => (event, isExpanded) => {
+      // console.log(panel, event, isExpanded);
+      this.setExpanded( panelId === expanded ? null : panelId );
+    };
     const getPizzaNameById = id => {
       const item = pizzas.filter(o => o.id === parseInt(id))[0]
       return item ? item.name : 'not-found';
@@ -74,45 +108,49 @@ class Orders extends Component {
       const symbol = currency ? currency.symbol : 'not-found';
       return `${roundNumber( base * price)} ${symbol}`;
     }
-
-    if(orders.length === 0) return <Loading />;
+    if(loading) return  <Loading />;
 
     return (
       <Container maxWidth="sm" className={classes.root}>
-        <Paper elevation={3} className={classes.main}>
-          <Typography variant="h4" component="h2">
-            Orders
-          </Typography>
-          {orders.map((order, i) => 
-            <Paper key={i} elevation={3} className={classes.orders}>
-              <Container className={classes.date}>
-                <Typography style={{ flexGrow: 1 }}>
-                  Date:
-                </Typography>
-                <Typography>
-                  {formatDate(order.date)}
-                </Typography>
-              </Container>
-              <Typography>
-                Items:
-              </Typography>
-              {order.items.map((item, l) => {
-                const name = getPizzaNameById(item.id);
-                const isPizza = item.id > 2;
-                return (
-                  <Paper key={l} elevation={1} className={classes.ordersItem}>
-                    <Typography style={{ flexGrow: 1 }}>
-                      {name}{isPizza ? ` (${item.amount})` : ''}
-                    </Typography>
-                    <Typography>
-                      {calculatePriceByAmount(order.currencyBase, order.currencyCode, item.price)}
-                    </Typography>
-                  </Paper>
-                )}
+         <Paper elevation={3} className={classes.main}>
+            <Typography variant="h4" component="h2">
+              Orders
+            </Typography>
+          </Paper>,
+          <div className={classes.rootNew}>
+            {orders.map((order, i) => {
+              const total = order.items.filter(o => o.id === 1)[0];
+              return (
+                <ExpansionPanel key={i} expanded={expanded === i} onChange={handleChange(i)}>
+                  <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1bh-content"
+                    // id="panel1bh-header"
+                    >
+                    <Typography className={classes.heading}>Total: {calculatePriceByAmount(order.currencyBase, order.currencyCode, total.price)}</Typography>
+                    <Typography className={classes.secondaryHeading}>{formatDate(order.date)}</Typography>
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails className={classes.panelDetails}>
+                    {order.items.map((item, l) => {
+                      if(item.id === 1) return undefined; // skip total
+                      const name = getPizzaNameById(item.id);
+                      const isPizza = item.id > 2;
+                      return (
+                        <Paper key={l} elevation={1} className={classes.ordersItem}>
+                          <Typography style={{ flexGrow: 1 }}>
+                            {name}{isPizza ? ` (${item.amount})` : ''}
+                          </Typography>
+                          <Typography>
+                            {calculatePriceByAmount(order.currencyBase, order.currencyCode, item.price)}
+                          </Typography>
+                        </Paper>
+                      )}
+                    )}
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
               )}
-            </Paper>
-          )}
-        </Paper>
+            )}
+          </div>
         <div className="mobile-bottom-fix"></div>
       </Container>
     );

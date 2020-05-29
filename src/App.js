@@ -76,20 +76,20 @@ class App extends Component {
                 <Confirm />
               </Route>
               <Route path="/products">
-                  {productsLoadingError
-                  ? <Button
-                      onClick={this.getProducts.bind(this)}
-                      color="secondary"
-                      style={{backgroundColor: 'white', fontSize: '18px'}}
-                    > Something went wrong.<br />Try load again...</Button>
-                  :
-                    pizzas.length === 0
-                    ? <Loading />
-                    : pizzas.filter(o => o.id > 2).map((o, i) => 
-                        <Products key={i} {...o} amount={cart[o.id]} />
-                      )
-                  }
-                  <div className="mobile-bottom-fix"></div>
+                {productsLoadingError
+                ? <Button
+                    onClick={this.getProducts.bind(this)}
+                    color="secondary"
+                    style={{backgroundColor: 'white', fontSize: '18px'}}
+                  > Something went wrong.<br />Try load again...</Button>
+                :
+                  pizzas.length === 0
+                  ? <Loading />
+                  : pizzas.filter(o => o.id > 2).map((o, i) =>
+                      <Products key={i} {...o} amount={cart[o.id]} />
+                    )
+                }
+                <div className="mobile-bottom-fix"></div>
               </Route>
               <Route path="/">
                 <Container maxWidth="sm">
