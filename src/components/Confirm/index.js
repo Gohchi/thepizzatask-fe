@@ -70,13 +70,16 @@ export default connect(mapStateToProps, { addOrder, clearCart })(( props ) => {
   const { base, symbol } = props.currency;
   const { contact } = props;
 
+  const [disabledButton, setDisabledButton] = React.useState(false);
   const handleConfirm = () => {
+    setDisabledButton( true );
     // props.addOrder(items, props.currency);
     doFetch('/order', 'POST', { items, currency: props.currency })
       .then(() => {
+        setDisabledButton( false );
         props.clearCart();
         history.push('/confirmed');
-      });
+      }, () => setDisabledButton( false ));
   }
   
   const calculatePriceByAmount = ( price, amount ) => {
@@ -153,15 +156,18 @@ export default connect(mapStateToProps, { addOrder, clearCart })(( props ) => {
         </Paper>
       </Paper>
         : undefined}
-      <Button
-        variant="contained" color="secondary" size="large"
-        className={classes.confirmButton}
-        onClick={contact.valid ? handleConfirm : undefined}
-      >
-        {contact.valid
-        ? 'Confirm'
-        : <Link to="/contactinfo" className="no-link">Go to complete contact info</Link>}
-      </Button>
+        <Button
+          variant="contained" color="secondary" size="large"
+          className={classes.confirmButton}
+          style={{backgroundColor: disabledButton ? 'white' : undefined}}
+          onClick={contact.valid ? handleConfirm : undefined}
+          disabled={disabledButton}
+        >
+          {contact.valid
+          ? disabledButton ? 'Confirming...' : 'Confirm'
+          : <Link to="/contactinfo" className="no-link">Go to complete contact info</Link>}
+        </Button>
+
       <div className="mobile-bottom-fix"></div>
     </Container>
   );

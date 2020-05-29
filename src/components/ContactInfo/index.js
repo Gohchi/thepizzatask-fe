@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
+  saveButton: {
+    fontSize: '32px'
+  }
 }));
 
 export default connect(mapStateToProps, { setContact })(( props ) => {
@@ -79,7 +82,6 @@ export default connect(mapStateToProps, { setContact })(( props ) => {
           <FormControl className={classes.margin} required>
             <InputLabel htmlFor="input-with-icon-adornment">Full name</InputLabel>
             <Input
-              id="input-with-icon-adornment"
               startAdornment={
                 <InputAdornment position="start">
                   <AccountCircle />
@@ -92,7 +94,6 @@ export default connect(mapStateToProps, { setContact })(( props ) => {
           <FormControl className={classes.margin} required>
             <InputLabel htmlFor="input-with-icon-adornment">Phone number</InputLabel>
             <Input
-              id="input-with-icon-adornment"
               startAdornment={
                 <InputAdornment position="start">
                   <Phone />
@@ -105,7 +106,6 @@ export default connect(mapStateToProps, { setContact })(( props ) => {
           <FormControl className={classes.margin} required>
             <InputLabel htmlFor="input-with-icon-adornment">Address</InputLabel>
             <Input
-              id="input-with-icon-adornment"
               startAdornment={
                 <InputAdornment position="start">
                   <Home />
@@ -118,7 +118,6 @@ export default connect(mapStateToProps, { setContact })(( props ) => {
           <FormControl className={classes.margin}>
             <InputLabel htmlFor="input-with-icon-adornment">Apartment</InputLabel>
             <Input
-              id="input-with-icon-adornment"
               startAdornment={
                 <InputAdornment position="start">
                   <Business />
@@ -128,14 +127,14 @@ export default connect(mapStateToProps, { setContact })(( props ) => {
               onInput={ e=> setNewApartment(e.target.value)}
             />
           </FormControl>
-          <Button
-            type="submit"
-            variant="contained" color="secondary" size="large"
-            id="save-contact-button"
-          >
-            Save
-          </Button>
         </Paper>
+        <Button
+          type="submit"
+          variant="contained" color="secondary" size="large"
+          className={classes.saveButton}
+        >
+          Save
+        </Button>
       </form>
     </Container>
   );

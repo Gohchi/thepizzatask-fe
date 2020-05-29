@@ -33,14 +33,21 @@ export default () => {
             We will contact you soon. Prepare your table!
           </Typography>
         
-          <Link to="/products" className="no-link">
-            <Button
-              variant="contained" color="secondary" size="large"
-            >
-              Go back to products
-            </Button>
-          </Link>
         </Paper>
+        <Link to="/products" className="no-link">
+          <Button
+            variant="contained" color="secondary" size="large" className={classes.margin}
+          >
+            Go back to products
+          </Button>
+        </Link>
+        <Link to="/orders" className="no-link">
+          <Button
+            variant="contained" color="secondary" size="large" className={classes.margin}
+          >
+            Or check your orders
+          </Button>
+        </Link>
     </Container>
   );
 };

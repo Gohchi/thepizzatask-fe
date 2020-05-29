@@ -1,10 +1,10 @@
 import { SAVE_CONTACT } from '../actions'
 
 const initialState = {
-  fullName: 'Martín Farias',
-  phone: '+54 11 1111 1111',
-  address: '5th Ave. - 1234', apartment: 42,
-  valid: true
+  // fullName: 'Martín Farias',
+  // phone: '+54 11 1111 1111',
+  // address: '5th Ave. - 1234', apartment: 42,
+  // valid: true
 };
 
 export default (state = initialState, action) => {

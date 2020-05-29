@@ -37,19 +37,26 @@ const mapStateToProps = (state) => {
 
 
 class App extends Component {
-  // constructor(props){
-  //   super(props)
-  // }
+  constructor(props){
+    super(props)
+
+    this.state = {
+      productsLoadingError: false
+    }
+  }
   componentDidMount(){
+    this.getProducts();
+  }
+  getProducts(){
+    this.setState({ productsLoadingError: false })
     doFetch('/products', 'GET')
       .then(res => {
         this.props.savePizzas(res.pizzas);
-      });
+      }, () => this.setState({ productsLoadingError: true }));
   }
-
   render(){
     const { pizzas, /*cartTotal,*/ cart } = this.props;
-    
+    const { productsLoadingError } = this.state;
     return (
       <Router>
         <div className="main">
@@ -69,7 +76,13 @@ class App extends Component {
                 <Confirm />
               </Route>
               <Route path="/products">
-                  {
+                  {productsLoadingError
+                  ? <Button
+                      onClick={this.getProducts.bind(this)}
+                      color="secondary"
+                      style={{backgroundColor: 'white', fontSize: '18px'}}
+                    > Something went wrong.<br />Try load again...</Button>
+                  :
                     pizzas.length === 0
                     ? <Loading />
                     : pizzas.filter(o => o.id > 2).map((o, i) => 
