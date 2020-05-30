@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { useForm } from "react-hook-form";
+import { RHFInput } from 'react-hook-form-input';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 
-import Input from '@material-ui/core/Input';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Phone from '@material-ui/icons/Phone';
 import Home from '@material-ui/icons/Home';
@@ -44,89 +44,104 @@ const useStyles = makeStyles((theme) => ({
 
 export default connect(mapStateToProps, { setContact })(( props ) => {
   const classes = useStyles();
+  const { register, handleSubmit, setValue, errors } = useForm();
   let history = useHistory();
   let { fullName, phone, address, apartment } = props.contact;
 
-  const [newFullName, setNewFullName] = useState(fullName);
-  const [newPhone, setNewPhone] = useState(phone);
-  const [newAddress, setNewAddress] = useState(address);
-  const [newApartment, setNewApartment] = useState(apartment);
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    props.setContact(newFullName, newPhone, newAddress, newApartment);
+  const onSubmit = data => {
+    props.setContact(data.fullName, data.phone, data.address, data.apartment);
     history.push('/confirm');
   };
-
-  // const validate = values => {
-  //   const errors = {};
-  //   if (!values.firstName) {
-  //     errors.newFullName = 'Required';
-  //   }
-  //   if (!values.lastName) {
-  //     errors.newPhone = 'Required';
-  //   }
-  //   if (!values.newAddress) {
-  //     errors.email = 'Required';
-  //   }
-  //   return errors;
-  // };
   
   return (
     <Container maxWidth="sm" className={classes.root}>
-      <form onSubmit={handleSubmit} noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Paper elevation={3} className={classes.item}>
           <Typography variant="h4" component="h2">
             Contact Info
           </Typography>
-          <FormControl className={classes.margin} required>
-            <InputLabel htmlFor="input-with-icon-adornment">Full name</InputLabel>
-            <Input
-              startAdornment={
-                <InputAdornment position="start">
-                  <AccountCircle />
-                </InputAdornment>
-              }
-              defaultValue={newFullName}  
-              onInput={ e=> setNewFullName(e.target.value)}
-            />
-          </FormControl>
-          <FormControl className={classes.margin} required>
-            <InputLabel htmlFor="input-with-icon-adornment">Phone number</InputLabel>
-            <Input
-              startAdornment={
-                <InputAdornment position="start">
-                  <Phone />
-                </InputAdornment>
-              }
-              defaultValue={newPhone}
-              onInput={ e=> setNewPhone(e.target.value)}
-            />
-          </FormControl>
-          <FormControl className={classes.margin} required>
-            <InputLabel htmlFor="input-with-icon-adornment">Address</InputLabel>
-            <Input
-              startAdornment={
-                <InputAdornment position="start">
-                  <Home />
-                </InputAdornment>
-              }
-              defaultValue={newAddress}
-              onInput={ e=> setNewAddress(e.target.value)}
-            />
-          </FormControl>
-          <FormControl className={classes.margin}>
-            <InputLabel htmlFor="input-with-icon-adornment">Apartment</InputLabel>
-            <Input
-              startAdornment={
-                <InputAdornment position="start">
-                  <Business />
-                </InputAdornment>
-              }
-              defaultValue={newApartment}
-              onInput={ e=> setNewApartment(e.target.value)}
-            />
-          </FormControl>
+          <RHFInput
+            name="fullName"
+            as={
+              <TextField
+                className={classes.margin}
+                label="Full name"
+                defaultValue={fullName}  
+                error={!!errors.fullName}
+                helperText={errors.fullName ? "This field is required." : undefined}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountCircle />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            }
+            rules={{ required: true }}
+            register={register} setValue={setValue}
+          />
+          <RHFInput
+            name="phone"
+            as={
+              <TextField
+                className={classes.margin}
+                label="Phone number"
+                defaultValue={phone}  
+                error={!!errors.phone}
+                helperText={errors.phone ? "This field is required." : undefined}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Phone />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            }
+            rules={{ required: true }}
+            register={register} setValue={setValue}
+          />
+          <RHFInput
+            name="address"
+            as={
+              <TextField
+                className={classes.margin}
+                label="Address"
+                defaultValue={address}  
+                error={!!errors.address}
+                helperText={errors.address ? "This field is required." : undefined}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Home />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            }
+            rules={{ required: true }}
+            register={register} setValue={setValue}
+          />
+          <RHFInput
+            name="apartment"
+            as={
+              <TextField
+                className={classes.margin}
+                label="Apartment"
+                defaultValue={apartment}  
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Business />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            }
+            rules={{ }}
+            register={register} setValue={setValue}
+          />
         </Paper>
         <Button
           type="submit"
